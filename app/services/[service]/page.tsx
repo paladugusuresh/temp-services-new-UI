@@ -2,8 +2,9 @@ import { notFound } from "next/navigation";
 import { SERVICES } from "@/content/services";
 import { STATES } from "@/content/states";
 
-export default function ServiceHub({ params }: { params: { service: string } }) {
-  const svc = SERVICES.find((s) => s.key === params.service);
+export default async function ServiceHub({ params }: { params: Promise<{ service: string }> }) {
+  const { service } = await params;
+  const svc = SERVICES.find((s) => s.key === service);
   if (!svc) return notFound();
 
   return (

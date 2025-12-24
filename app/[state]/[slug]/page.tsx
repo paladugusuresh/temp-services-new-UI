@@ -52,8 +52,8 @@ export function generateStaticParams() {
   return paths;
 }
 
-export async function generateMetadata({ params }: { params: { state: string; slug: string } }): Promise<Metadata> {
-  const { state, slug } = params;
+export async function generateMetadata({ params }: { params: Promise<{ state: string; slug: string }> }): Promise<Metadata> {
+  const { state, slug } = await params;
   const st = findState(state);
   const svc = findServiceByCostSlug(slug);
   if (!st || !svc) return {};
@@ -68,8 +68,8 @@ export async function generateMetadata({ params }: { params: { state: string; sl
   };
 }
 
-export default async function Page({ params }: { params: { state: string; slug: string } }) {
-  const { state, slug } = params;
+export default async function Page({ params }: { params: Promise<{ state: string; slug: string }> }) {
+  const { state, slug } = await params;
   const st = findState(state);
   const svc = findServiceByCostSlug(slug);
 
