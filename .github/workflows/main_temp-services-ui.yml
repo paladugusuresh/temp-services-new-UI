@@ -28,40 +28,25 @@ jobs:
           npm i
           npm run build
           
-      - name: Debug build output
-        run: |
-          echo "=== .next/standalone structure ==="
-          find .next/standalone -type f | head -30
-          echo ""
-          echo "=== Does standalone have .next? ==="
-          ls -la .next/standalone/.next/ 2>/dev/null || echo "No .next in standalone"
-          
       - name: Prepare deployment package
         run: |
-          # Copy standalone output
-          mkdir -p deployment
-          cp -r .next/standalone/* deployment/
-          cp -r .next/standalone/.next deployment/.next 2>/dev/null || echo "No .next in standalone to copy"
+          # Copy standalone output (includes server.js, .next, node_modules)
+          cp -r .next/standalone ./deployment
           
-          # Add static files
-          mkdir -p deployment/.next/static
-          cp -r .next/static/* deployment/.next/static/
+          # Standalone doesn't include static assets - must copy manually
+          cp -r .next/static ./deployment/.next/static
           
-          # Add public folder
-          if [ -d "public" ]; then
-            cp -r public deployment/public
-          fi
+          # Copy public folder
+          cp -r public ./deployment/public
           
-      - name: Debug deployment structure
+      - name: Verify deployment has required files
         run: |
-          echo "=== Deployment root ==="
-          ls -la deployment/
-          echo ""
-          echo "=== Deployment .next ==="
-          ls -la deployment/.next/
-          echo ""
-          echo "=== Files in deployment ==="
-          find deployment -name "BUILD_ID" -o -name "server.js" -o -name "*.json" | head -20
+          echo "✓ Checking deployment structure..."
+          test -f deployment/server.js && echo "✓ server.js found" || echo "✗ server.js MISSING"
+          test -d deployment/.next && echo "✓ .next directory found" || echo "✗ .next directory MISSING"
+          test -f deployment/.next/BUILD_ID && echo "✓ BUILD_ID found" || echo "✗ BUILD_ID MISSING"
+          test -d deployment/.next/static && echo "✓ .next/static found" || echo "✗ .next/static MISSING"
+          test -d deployment/public && echo "✓ public found" || echo "✗ public MISSING"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
