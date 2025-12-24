@@ -33,7 +33,7 @@ export default function DisclaimerPage() {
       </p>
 
       <ol>
-        <li>National baseline pricing from public cost guides (primarily Angi)</li>
+        <li>Baseline ranges we maintain for common services</li>
         <li>BEA Regional Price Parities (RPP) for state-level cost adjustments</li>
         <li>BLS Consumer Price Index (CPI-U) for inflation adjustments</li>
       </ol>
@@ -108,8 +108,8 @@ export default function DisclaimerPage() {
       </p>
 
       <ul>
-        <li>Our estimates reflect current market conditions in your exact location</li>
-        <li>Our data sources (BLS, BEA, Angi) are error-free</li>
+        <li>Our state-level estimates reflect your specific city or job conditions; variation is expected</li>
+        <li>Our data sources (BLS, BEA) are error-free</li>
         <li>Our calculations are free from errors</li>
         <li>The website is always available or error-free</li>
       </ul>

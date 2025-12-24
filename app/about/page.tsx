@@ -19,7 +19,7 @@ export default function AboutPage() {
       <h2 style={{ fontSize: "1.875rem", fontWeight: "600", marginTop: "32px", marginBottom: "16px" }}>Our Methodology</h2>
       
       <p>
-        We start with national baseline pricing ranges sourced from industry cost guides (primarily Angi), then adjust them using:
+        We start with baseline ranges we maintain for common services, then adjust them using:
       </p>
 
       <ol style={{ paddingLeft: "24px" }}>
@@ -34,8 +34,7 @@ export default function AboutPage() {
       </ol>
 
       <p>
-        This approach gives you a <em>defensible estimate</em> based on transparent, publicly available data - not scraped 
-        competitor prices or unverifiable claims.
+        This approach gives you a <em>defensible estimate</em> based on transparent, publicly available government data.
       </p>
 
       <h2 style={{ fontSize: "1.875rem", fontWeight: "600", marginTop: "32px", marginBottom: "16px" }}>What We're Not</h2>

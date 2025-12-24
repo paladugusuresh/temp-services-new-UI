@@ -7,8 +7,8 @@ node_modules
 /coverage
 
 # Next.js build artifacts
-.next
-out
+.next/
+out/
 
 # Environment variables
 .env*

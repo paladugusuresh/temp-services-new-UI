@@ -2,62 +2,80 @@
 import { notFound } from "next/navigation";
 import { STATES } from "@/content/states";
 import { SERVICES } from "@/content/services";
-import { getEstimate, getEstimateMeta } from "@/content/estimates";
 import EstimateCard from "@/components/EstimateCard";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import Faq from "@/components/Faq";
 import { buildFaq } from "@/content/faqs";
 import type { Metadata } from "next";
 
-export const dynamic = "force-static";
-
 function findState(state: string) {
-  return STATES.find(s => s.slug === state);
+  return STATES.find((s) => s.slug === state);
 }
 
 function findServiceByCostSlug(slug: string) {
-  return SERVICES.find(s => s.slugCost === slug);
+  return SERVICES.find((s) => s.slugCost === slug);
+}
+
+async function fetchEstimate(serviceKey: string, stateSlug: string) {
+  const base = process.env.PRICING_API_BASE;
+  if (!base) {
+    if (process.env.NODE_ENV === "production") {
+      console.error("PRICING_API_BASE is not set in production");
+    }
+    if (process.env.NODE_ENV === "development") {
+      // Mock data for development
+      return { low: 75, high: 150, unit: "hour", year: 2024 };
+    }
+    return null;
+  }
+
+  const url = `${base.replace(/\/$/, "")}/api/v1/estimates/${encodeURIComponent(serviceKey)}/${encodeURIComponent(stateSlug)}?year=2024`;
+
+  try {
+    const res = await fetch(url, { next: { revalidate: 3600 } });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error(`Failed to fetch estimate for ${serviceKey} in ${stateSlug}:`, err);
+    return null;
+  }
 }
 
 export function generateStaticParams() {
-  const params: Array<{ state: string; slug: string }> = [];
+  const paths: { state: string; slug: string }[] = [];
   for (const st of STATES) {
     for (const svc of SERVICES) {
-      params.push({ state: st.slug, slug: svc.slugCost });
+      paths.push({ state: st.slug, slug: svc.slugCost });
     }
   }
-  return params;
+  return paths;
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ state: string; slug: string }> }): Promise<Metadata> {
-  const { state, slug } = await params;
+export async function generateMetadata({ params }: { params: { state: string; slug: string } }): Promise<Metadata> {
+  const { state, slug } = params;
   const st = findState(state);
   const svc = findServiceByCostSlug(slug);
-  
   if (!st || !svc) return {};
 
   const title = `${svc.name} Cost in ${st.name} | Temp Services`;
-  const description = `${svc.intro} Get estimated ${svc.name.toLowerCase()} costs in ${st.name} based on BEA Regional Price Parities and BLS Consumer Price Index.`;
+  const description = `${svc.intro} Get estimated ${svc.name.toLowerCase()} costs in ${st.name} based on BEA Regional Price Parities and the BLS Consumer Price Index.`;
 
   return {
     title,
     description,
-    openGraph: {
-      title,
-      description,
-    },
+    openGraph: { title, description },
   };
 }
 
-export default async function Page({ params }: { params: Promise<{ state: string; slug: string }> }) {
-  const { state, slug } = await params;
+export default async function Page({ params }: { params: { state: string; slug: string } }) {
+  const { state, slug } = params;
   const st = findState(state);
   const svc = findServiceByCostSlug(slug);
-  
+
   if (!st || !svc) return notFound();
 
-  const est = getEstimate(st.slug, svc.key);
-  const meta = getEstimateMeta();
+  const est = await fetchEstimate(svc.key, st.slug);
   const faq = buildFaq(svc, st);
 
   return (
@@ -77,7 +95,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
       <p style={{ fontSize: "1.125rem", color: "#4b5563", lineHeight: "1.75" }}>{st.intro}</p>
       <p style={{ fontSize: "1.125rem", color: "#4b5563", lineHeight: "1.75" }}>{svc.intro}</p>
 
-      <EstimateCard service={svc} state={st} estimate={est} meta={meta} />
+      <EstimateCard service={svc} state={st} estimate={est} />
 
       <section style={{ margin: "32px 0" }}>
         <h2 style={{ fontSize: "1.875rem", fontWeight: "600", marginBottom: "16px" }}>What Affects the Price</h2>
@@ -117,15 +135,16 @@ export default async function Page({ params }: { params: Promise<{ state: string
           <li>Adjust for inflation using the <strong>BLS Consumer Price Index (CPI-U)</strong></li>
         </ol>
         <p style={{ lineHeight: "1.75", marginBottom: 0 }}>
-          Actual prices vary by job size, access, materials, timing, and contractor. Get multiple local quotes before you book.
+          Actual prices vary by job size, access, materials, timing, and contractor. Get multiple local quotes before you
+          book.
         </p>
       </section>
 
       <Faq items={faq} />
 
       <p style={{ fontSize: "0.875rem", color: "#9ca3af", marginTop: "48px", borderTop: "1px solid #e5e7eb", paddingTop: "16px" }}>
-        <strong>Disclaimer:</strong> Estimates vary based on job size, access, materials, timing, and contractor. 
-        This is not a guarantee of actual pricing. Always get multiple local quotes.
+        <strong>Disclaimer:</strong> Estimates vary based on job size, access, materials, timing, and contractor. This is
+        not a guarantee of actual pricing. Always get multiple local quotes.
       </p>
     </main>
   );

@@ -4,9 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prefetch": "node scripts/prefetch-estimates.mjs",
-    "build": "npm run prefetch && next build",
-    "start": "next start",
+    "build": "next build",
+    "start": "node .next/standalone/server.js",
     "lint": "next lint"
   },
   "dependencies": {

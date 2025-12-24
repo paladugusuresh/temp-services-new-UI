@@ -1,5 +1,6 @@
 // app/robots.ts
 export default function robots() {
+  const base = process.env.SITE_URL ?? "https://temp-services.com";
   return {
     rules: [
       {
@@ -7,6 +8,6 @@ export default function robots() {
         allow: "/",
       },
     ],
-    sitemap: "https://temp-services.com/sitemap.xml",
+    sitemap: `${base.replace(/\/$/, "")}/sitemap.xml`,
   };
 }
