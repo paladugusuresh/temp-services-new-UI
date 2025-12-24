@@ -25,34 +25,33 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          npm i
+          npm ci
           npm run build
           
-      - name: Prepare deployment package
+      - name: Prepare standalone deployment
         run: |
-          # Copy standalone output (includes server.js, .next, node_modules)
-          cp -r .next/standalone ./deployment
+          # Copy static assets into standalone (not included by default)
+          mkdir -p .next/standalone/.next
+          cp -r .next/static .next/standalone/.next/static
           
-          # Standalone doesn't include static assets - must copy manually
-          cp -r .next/static ./deployment/.next/static
+          # Copy public folder into standalone
+          cp -r public .next/standalone/public
           
-          # Copy public folder
-          cp -r public ./deployment/public
-          
-      - name: Verify deployment has required files
+      - name: Verify standalone package
         run: |
-          echo "✓ Checking deployment structure..."
-          test -f deployment/server.js && echo "✓ server.js found" || echo "✗ server.js MISSING"
-          test -d deployment/.next && echo "✓ .next directory found" || echo "✗ .next directory MISSING"
-          test -f deployment/.next/BUILD_ID && echo "✓ BUILD_ID found" || echo "✗ BUILD_ID MISSING"
-          test -d deployment/.next/static && echo "✓ .next/static found" || echo "✗ .next/static MISSING"
-          test -d deployment/public && echo "✓ public found" || echo "✗ public MISSING"
+          echo "✓ Verifying standalone deployment package..."
+          cd .next/standalone
+          test -f server.js && echo "✓ server.js found" || echo "✗ server.js MISSING"
+          test -d .next && echo "✓ .next directory found" || echo "✗ .next directory MISSING"
+          test -f .next/BUILD_ID && echo "✓ BUILD_ID found" || echo "✗ BUILD_ID MISSING"
+          test -d .next/static && echo "✓ .next/static found" || echo "✗ .next/static MISSING"
+          test -d public && echo "✓ public found" || echo "✗ public MISSING"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: deployment
+          path: .next/standalone
 
   deploy:
     runs-on: ubuntu-latest
