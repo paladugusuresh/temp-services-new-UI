@@ -30,11 +30,14 @@ jobs:
           
       - name: Prepare deployment package
         run: |
+          # Copy standalone server files
           cp -r .next/standalone ./deployment
-          mkdir -p ./deployment/.next
-          cp -r .next/static ./deployment/.next/static
+          # Copy the entire .next directory to preserve build artifacts
+          cp -r .next ./deployment/.next
+          # Copy public folder
           mkdir -p ./deployment/public
-          cp -r public/* ./deployment/public/
+          if [ -d "public" ]; then cp -r public/* ./deployment/public/ || true; fi
+          # Copy package.json
           cp package.json ./deployment/
 
       - name: Upload artifact for deployment job
