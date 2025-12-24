@@ -28,34 +28,40 @@ jobs:
           npm i
           npm run build
           
+      - name: Debug build output
+        run: |
+          echo "=== .next/standalone structure ==="
+          find .next/standalone -type f | head -30
+          echo ""
+          echo "=== Does standalone have .next? ==="
+          ls -la .next/standalone/.next/ 2>/dev/null || echo "No .next in standalone"
+          
       - name: Prepare deployment package
         run: |
-          # Standalone creates everything needed at .next/standalone/
+          # Copy standalone output
           mkdir -p deployment
-          
-          # Copy all standalone files (includes server.js at root)
           cp -r .next/standalone/* deployment/
+          cp -r .next/standalone/.next deployment/.next 2>/dev/null || echo "No .next in standalone to copy"
           
-          # Standalone doesn't include static files, must copy manually
+          # Add static files
           mkdir -p deployment/.next/static
           cp -r .next/static/* deployment/.next/static/
           
-          # Copy public folder if it exists
-          if [ -d "public" ] && [ "$(ls -A public 2>/dev/null)" ]; then
-            mkdir -p deployment/public
-            cp -r public/* deployment/public/
+          # Add public folder
+          if [ -d "public" ]; then
+            cp -r public deployment/public
           fi
           
       - name: Debug deployment structure
         run: |
-          echo "=== Root deployment files ==="
-          ls -la ./deployment/
+          echo "=== Deployment root ==="
+          ls -la deployment/
           echo ""
-          echo "=== .next directory ==="
-          ls -la ./deployment/.next/ 2>/dev/null || echo ".next directory not found!"
+          echo "=== Deployment .next ==="
+          ls -la deployment/.next/
           echo ""
-          echo "=== Check for BUILD_ID ==="
-          cat ./deployment/.next/BUILD_ID 2>/dev/null || echo "BUILD_ID not found"
+          echo "=== Files in deployment ==="
+          find deployment -name "BUILD_ID" -o -name "server.js" -o -name "*.json" | head -20
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
