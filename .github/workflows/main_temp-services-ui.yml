@@ -25,20 +25,37 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          npm i
+          npm ci
           npm run build
           
       - name: Prepare deployment package
         run: |
-          # Copy standalone server files
-          cp -r .next/standalone ./deployment
-          # Copy the entire .next directory to preserve build artifacts
-          cp -r .next ./deployment/.next
-          # Copy public folder
-          mkdir -p ./deployment/public
-          if [ -d "public" ]; then cp -r public/* ./deployment/public/ || true; fi
-          # Copy package.json
-          cp package.json ./deployment/
+          # Standalone creates everything needed at .next/standalone/
+          mkdir -p deployment
+          
+          # Copy all standalone files (includes server.js at root)
+          cp -r .next/standalone/* deployment/
+          
+          # Standalone doesn't include static files, must copy manually
+          mkdir -p deployment/.next/static
+          cp -r .next/static/* deployment/.next/static/
+          
+          # Copy public folder if it exists
+          if [ -d "public" ] && [ "$(ls -A public 2>/dev/null)" ]; then
+            mkdir -p deployment/public
+            cp -r public/* deployment/public/
+          fi
+          
+      - name: Debug deployment structure
+        run: |
+          echo "=== Root deployment files ==="
+          ls -la ./deployment/
+          echo ""
+          echo "=== .next directory ==="
+          ls -la ./deployment/.next/ 2>/dev/null || echo ".next directory not found!"
+          echo ""
+          echo "=== Check for BUILD_ID ==="
+          cat ./deployment/.next/BUILD_ID 2>/dev/null || echo "BUILD_ID not found"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
