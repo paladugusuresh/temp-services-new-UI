@@ -131,6 +131,6 @@ jobs:
         run: |
           set -e
           az webapp deployment source config-zip \
-            --resource-group temp-services \
+            --resource-group ES-USE2-DEV-RG \
             --name temp-services-ui \
             --src deploy.zip
