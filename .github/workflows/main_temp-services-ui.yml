@@ -37,6 +37,9 @@ jobs:
           # Copy public folder into standalone
           cp -r public .next/standalone/public
           
+          # Copy .deployment file to disable Azure build
+          cp .deployment .next/standalone/.deployment
+          
       - name: Verify standalone package
         run: |
           echo "✓ Verifying standalone deployment package..."
