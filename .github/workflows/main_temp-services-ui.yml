@@ -129,8 +129,8 @@ jobs:
 
       - name: Deploy ZIP to Azure Web App
         run: |
-          set -e
-          az webapp deployment source config-zip \
+            az webapp deploy \
             --resource-group ES-USE2-DEV-RG \
             --name temp-services-ui \
-            --src deploy.zip
+            --src-path deploy.zip \
+            --type zip
