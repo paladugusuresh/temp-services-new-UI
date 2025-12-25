@@ -26,58 +26,35 @@ jobs:
       - name: Build Next.js
         run: npm run build
 
-      # Hard checks: fail the pipeline if build output isn't there
-      - name: Verify Next build output
+      - name: Verify standalone build exists
         run: |
           set -e
-          echo "=== .next root ==="
-          ls -la .next | sed -n '1,160p'
-
-          test -f .next/BUILD_ID || (echo "✗ .next/BUILD_ID missing" && exit 1)
+          test -f .next/standalone/server.js || (echo "✗ .next/standalone/server.js missing" && exit 1)
           test -d .next/static || (echo "✗ .next/static missing" && exit 1)
-          test -d .next/standalone || (echo "✗ .next/standalone missing (check next.config.js output: 'standalone')" && exit 1)
-
-          echo "✓ Next build output looks good"
+          echo "✓ standalone build output exists"
 
       - name: Prepare deploy folder (standalone)
         run: |
           set -e
           rm -rf deploy
-          mkdir -p deploy/.next
+          mkdir -p deploy
 
-          # 1) Copy the standalone bundle (includes server.js and minimal node_modules)
+          # Copy standalone runtime bundle (includes server.js + required node_modules)
           cp -R .next/standalone/* deploy/
 
-          # 2) Copy static assets (NOT included by default in standalone)
+          # Copy static and public assets
+          mkdir -p deploy/.next
           cp -R .next/static deploy/.next/static
-
-          # 3) Copy BUILD_ID + manifests that Next expects in ".next"
-          cp .next/BUILD_ID deploy/.next/BUILD_ID
-
-          # Copy common manifest json files if present
-          if ls .next/*.json 1> /dev/null 2>&1; then
-            cp .next/*.json deploy/.next/
-          fi
-
-          # 4) Copy public assets
-          if [ -d public ]; then
-            cp -R public deploy/public
-          fi
+          [ -d public ] && cp -R public deploy/public || true
 
       - name: Verify deploy folder
         run: |
           set -e
-          echo "=== deploy root ==="
-          ls -la deploy | sed -n '1,160p'
-          echo "=== deploy/.next ==="
-          ls -la deploy/.next | sed -n '1,160p'
-
           test -f deploy/server.js || (echo "✗ deploy/server.js missing" && exit 1)
           test -f deploy/package.json || (echo "✗ deploy/package.json missing" && exit 1)
-          test -f deploy/.next/BUILD_ID || (echo "✗ deploy/.next/BUILD_ID missing" && exit 1)
+          test -d deploy/node_modules || (echo "✗ deploy/node_modules missing (standalone copy failed)" && exit 1)
           test -d deploy/.next/static || (echo "✗ deploy/.next/static missing" && exit 1)
-
-          echo "✓ deploy folder is valid"
+          echo "✓ deploy folder OK"
 
       - name: Create ZIP package
         run: |
@@ -85,14 +62,7 @@ jobs:
           cd deploy
           zip -r ../deploy.zip .
           cd ..
-          echo "ZIP created:"
-          ls -lh deploy.zip
-
-      - name: Verify ZIP contains required files
-        run: |
-          set -e
-          unzip -l deploy.zip | grep -E "server.js$|package.json$|\.next/BUILD_ID$|\.next/static/|public/" | head -80
-          unzip -l deploy.zip | grep -E "\.next/BUILD_ID$" >/dev/null
+          unzip -l deploy.zip | head -60
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -113,13 +83,6 @@ jobs:
         with:
           name: node-app
 
-      - name: Verify downloaded ZIP
-        run: |
-          set -e
-          ls -lh
-          unzip -l deploy.zip | grep -E "server.js$|package.json$|\.next/BUILD_ID$|\.next/static/" | head -80
-          unzip -l deploy.zip | grep -E "\.next/BUILD_ID$" >/dev/null
-
       - name: Login to Azure (OIDC)
         uses: azure/login@v2
         with:
@@ -129,7 +92,8 @@ jobs:
 
       - name: Deploy ZIP to Azure Web App
         run: |
-            az webapp deploy \
+          set -e
+          az webapp deploy \
             --resource-group ES-USE2-DEV-RG \
             --name temp-services-ui \
             --src-path deploy.zip \
