@@ -20,7 +20,7 @@ jobs:
           node-version: "20.x"
           cache: "npm"
 
-      # Use npm install (since you said npm ci fails)
+      # Use npm install (since npm ci fails for you)
       - name: Install dependencies
         run: npm install
 
@@ -31,7 +31,7 @@ jobs:
         run: |
           set -e
           echo "=== .next root ==="
-          ls -la .next | sed -n '1,120p'
+          ls -la .next | sed -n '1,160p'
           test -d .next/standalone || (echo "✗ .next/standalone missing. Ensure next.config.js has output: 'standalone'" && exit 1)
           test -f .next/standalone/server.js || (echo "✗ .next/standalone/server.js missing" && exit 1)
           test -d .next/static || (echo "✗ .next/static missing" && exit 1)
@@ -49,20 +49,16 @@ jobs:
           # Copy Next static assets
           cp -R .next/static deploy/.next/static
 
-          # Copy public assets (if present)
+          # Copy public assets
           if [ -d public ]; then
             cp -R public deploy/public
           fi
 
-          echo "=== deploy root ==="
-          ls -la deploy | sed -n '1,200p'
-          echo "=== deploy/.next ==="
-          ls -la deploy/.next | sed -n '1,200p'
-
-          # HARD checks (these must be present)
+          # HARD checks
           test -f deploy/server.js || (echo "✗ deploy/server.js missing" && exit 1)
           test -f deploy/package.json || (echo "✗ deploy/package.json missing" && exit 1)
           test -d deploy/node_modules || (echo "✗ deploy/node_modules missing (standalone copy failed)" && exit 1)
+          test -d deploy/node_modules/next || (echo "✗ deploy/node_modules/next missing" && exit 1)
           test -d deploy/.next/static || (echo "✗ deploy/.next/static missing" && exit 1)
 
           echo "✓ deploy folder is valid"
@@ -76,12 +72,11 @@ jobs:
           echo "ZIP created:"
           ls -lh deploy.zip
 
-      - name: Verify ZIP contents (must include node_modules)
+      - name: Verify ZIP contains Next runtime
         run: |
           set -e
-          echo "=== Key files in ZIP ==="
-          unzip -l deploy.zip | grep -E "server.js$|package.json$|node_modules/|\.next/static/|public/" | head -80
-          unzip -l deploy.zip | grep -E "node_modules/" >/dev/null || (echo "✗ ZIP missing node_modules" && exit 1)
+          unzip -l deploy.zip | grep -E "server.js$|package.json$|node_modules/next/" | head -60
+          unzip -l deploy.zip | grep -E "node_modules/next/" >/dev/null || (echo "✗ ZIP missing node_modules/next" && exit 1)
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -106,8 +101,8 @@ jobs:
         run: |
           set -e
           ls -lh
-          unzip -l deploy.zip | grep -E "server.js$|package.json$|node_modules/|\.next/static/|public/" | head -80
-          unzip -l deploy.zip | grep -E "node_modules/" >/dev/null || (echo "✗ ZIP missing node_modules" && exit 1)
+          unzip -l deploy.zip | grep -E "server.js$|package.json$|node_modules/next/" | head -60
+          unzip -l deploy.zip | grep -E "node_modules/next/" >/dev/null || (echo "✗ ZIP missing node_modules/next" && exit 1)
 
       - name: Login to Azure (OIDC)
         uses: azure/login@v2
@@ -116,12 +111,12 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_23F24869B3934F7FA97F56B8B45570E1 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D92EDB1548F548EC89842E80176D7A4E }}
 
-      - name: Deploy ZIP to Azure Web App
+      # IMPORTANT: Use ZipDeploy so Azure extracts the zip as-is.
+      # OneDeploy (az webapp deploy) keeps triggering Oryx tar behavior in your case.
+      - name: Deploy ZIP to Azure Web App (ZipDeploy)
         run: |
           set -e
-          az webapp deploy \
+          az webapp deployment source config-zip \
             --resource-group ES-USE2-DEV-RG \
             --name temp-services-ui \
-            --src-path deploy.zip \
-            --type zip
-
+            --src deploy.zip
