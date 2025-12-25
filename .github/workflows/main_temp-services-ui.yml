@@ -66,6 +66,16 @@ jobs:
         with:
           name: node-app
       
+      - name: Verify downloaded artifact structure
+        run: |
+          echo "=== Files in downloaded artifact ==="
+          ls -la
+          echo ""
+          echo "=== Checking required files ==="
+          test -f server.js && echo "✓ server.js present" || echo "✗ server.js MISSING"
+          test -d .next && echo "✓ .next present" || echo "✗ .next MISSING"
+          test -f .next/BUILD_ID && echo "✓ BUILD_ID present" || echo "✗ BUILD_ID MISSING"
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -80,4 +90,6 @@ jobs:
           app-name: 'temp-services-ui'
           slot-name: 'Production'
           package: .
+        env:
+          SCM_DO_BUILD_DURING_DEPLOYMENT: false
           
