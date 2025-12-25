@@ -1,4 +1,4 @@
-name: Build and deploy Next.js app (standalone) to Azure Web App - temp-services-ui
+name: Build and deploy Next.js (standalone) to Azure Web App - temp-services-ui
 
 on:
   push:
@@ -14,21 +14,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js (LTS)
+      - name: Set up Node.js 20 (LTS)
         uses: actions/setup-node@v4
         with:
           node-version: "20.x"
           cache: "npm"
 
+      # Use npm install (since you said npm ci fails)
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build Next.js
         run: npm run build
 
-      - name: Verify standalone build exists
+      - name: Verify standalone output exists
         run: |
           set -e
+          echo "=== .next root ==="
+          ls -la .next | sed -n '1,120p'
+          test -d .next/standalone || (echo "✗ .next/standalone missing. Ensure next.config.js has output: 'standalone'" && exit 1)
           test -f .next/standalone/server.js || (echo "✗ .next/standalone/server.js missing" && exit 1)
           test -d .next/static || (echo "✗ .next/static missing" && exit 1)
           echo "✓ standalone build output exists"
@@ -37,24 +41,31 @@ jobs:
         run: |
           set -e
           rm -rf deploy
-          mkdir -p deploy
+          mkdir -p deploy/.next
 
-          # Copy standalone runtime bundle (includes server.js + required node_modules)
+          # Copy standalone runtime bundle (includes server.js + node_modules)
           cp -R .next/standalone/* deploy/
 
-          # Copy static and public assets
-          mkdir -p deploy/.next
+          # Copy Next static assets
           cp -R .next/static deploy/.next/static
-          [ -d public ] && cp -R public deploy/public || true
 
-      - name: Verify deploy folder
-        run: |
-          set -e
+          # Copy public assets (if present)
+          if [ -d public ]; then
+            cp -R public deploy/public
+          fi
+
+          echo "=== deploy root ==="
+          ls -la deploy | sed -n '1,200p'
+          echo "=== deploy/.next ==="
+          ls -la deploy/.next | sed -n '1,200p'
+
+          # HARD checks (these must be present)
           test -f deploy/server.js || (echo "✗ deploy/server.js missing" && exit 1)
           test -f deploy/package.json || (echo "✗ deploy/package.json missing" && exit 1)
           test -d deploy/node_modules || (echo "✗ deploy/node_modules missing (standalone copy failed)" && exit 1)
           test -d deploy/.next/static || (echo "✗ deploy/.next/static missing" && exit 1)
-          echo "✓ deploy folder OK"
+
+          echo "✓ deploy folder is valid"
 
       - name: Create ZIP package
         run: |
@@ -62,7 +73,15 @@ jobs:
           cd deploy
           zip -r ../deploy.zip .
           cd ..
-          unzip -l deploy.zip | head -60
+          echo "ZIP created:"
+          ls -lh deploy.zip
+
+      - name: Verify ZIP contents (must include node_modules)
+        run: |
+          set -e
+          echo "=== Key files in ZIP ==="
+          unzip -l deploy.zip | grep -E "server.js$|package.json$|node_modules/|\.next/static/|public/" | head -80
+          unzip -l deploy.zip | grep -E "node_modules/" >/dev/null || (echo "✗ ZIP missing node_modules" && exit 1)
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -82,6 +101,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
+
+      - name: Verify downloaded ZIP
+        run: |
+          set -e
+          ls -lh
+          unzip -l deploy.zip | grep -E "server.js$|package.json$|node_modules/|\.next/static/|public/" | head -80
+          unzip -l deploy.zip | grep -E "node_modules/" >/dev/null || (echo "✗ ZIP missing node_modules" && exit 1)
 
       - name: Login to Azure (OIDC)
         uses: azure/login@v2
