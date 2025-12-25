@@ -37,9 +37,6 @@ jobs:
           # Copy public folder into standalone
           cp -r public .next/standalone/public
           
-          # Copy .deployment file to disable Azure build
-          cp .deployment .next/standalone/.deployment
-          
       - name: Verify standalone package
         run: |
           echo "✓ Verifying standalone deployment package..."
@@ -49,12 +46,21 @@ jobs:
           test -f .next/BUILD_ID && echo "✓ BUILD_ID found" || echo "✗ BUILD_ID MISSING"
           test -d .next/static && echo "✓ .next/static found" || echo "✗ .next/static MISSING"
           test -d public && echo "✓ public found" || echo "✗ public MISSING"
+      
+      - name: Create ZIP deployment package
+        run: |
+          echo "Creating ZIP package..."
+          cd .next/standalone
+          zip -r ../../deploy.zip .
+          cd ../..
+          echo "ZIP package created:"
+          ls -lh deploy.zip
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .next/standalone
+          path: deploy.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -69,15 +75,13 @@ jobs:
         with:
           name: node-app
       
-      - name: Verify downloaded artifact structure
+      - name: Verify downloaded ZIP
         run: |
-          echo "=== Files in downloaded artifact ==="
-          ls -la
+          echo "=== Downloaded files ==="
+          ls -lh
           echo ""
-          echo "=== Checking required files ==="
-          test -f server.js && echo "✓ server.js present" || echo "✗ server.js MISSING"
-          test -d .next && echo "✓ .next present" || echo "✗ .next MISSING"
-          test -f .next/BUILD_ID && echo "✓ BUILD_ID present" || echo "✗ BUILD_ID MISSING"
+          echo "=== ZIP contents ==="
+          unzip -l deploy.zip | head -20
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -86,13 +90,12 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_23F24869B3934F7FA97F56B8B45570E1 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D92EDB1548F548EC89842E80176D7A4E }}
 
-      - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'temp-services-ui'
-          slot-name: 'Production'
-          package: .
-        env:
-          SCM_DO_BUILD_DURING_DEPLOYMENT: false
+      - name: 'Deploy to Azure Web App via ZIP'
+        run: |
+          echo "Deploying ZIP package to Azure..."
+          az webapp deployment source config-zip \
+            --resource-group temp-services \
+            --name temp-services-ui \
+            --src deploy.zip
+          echo "Deployment complete!"
           
