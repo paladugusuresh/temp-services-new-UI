@@ -24,7 +24,7 @@ jobs:
 
       - name: Build static site
         env:
-          PRICING_API_BASE: https://temp-services-c3b6drdzhag3gxbw.australiacentral-01.azurewebsites.net
+          NEXT_PUBLIC_PRICING_API_BASE: https://temp-services-c3b6drdzhag3gxbw.australiacentral-01.azurewebsites.net
           SITE_URL: https://temp-services-ui-bxcuevdfexcdehce.australiacentral-01.azurewebsites.net
           NODE_ENV: production
         run: npm run build
