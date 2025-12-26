@@ -16,7 +16,7 @@ export default function DynamicEstimate({ serviceKey, stateSlug, service, state 
 
   useEffect(() => {
     async function loadEstimate() {
-      const base = process.env.NEXT_PUBLIC_PRICING_API_BASE || 'https://temp-services-api.azurewebsites.net';
+      const base = process.env.NEXT_PUBLIC_PRICING_API_BASE || 'https://temp-services-c3b6drdzhag3gxbw.australiacentral-01.azurewebsites.net';
       // Use the correct API endpoint format from Swagger: /api/estimate?service=X&location=Y
       const url = `${base.replace(/\/$/, "")}/api/estimate?service=${encodeURIComponent(serviceKey)}&location=${encodeURIComponent(stateSlug)}`;
 
