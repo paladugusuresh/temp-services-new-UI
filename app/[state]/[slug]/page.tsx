@@ -33,14 +33,6 @@ async function fetchEstimate(serviceKey: string, stateSlug: string) {
   }
 }
 
-function findState(state: string) {
-  return STATES.find((s) => s.slug === state);
-}
-
-function findServiceByCostSlug(slug: string) {
-  return SERVICES.find((s) => s.slugCost === slug);
-}
-
 export function generateStaticParams() {
   const paths: { state: string; slug: string }[] = [];
   for (const st of STATES) {
