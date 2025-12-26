@@ -2,11 +2,25 @@ import type { Service } from "@/content/services";
 import type { State } from "@/content/states";
 
 type Estimate = {
+  service_key: string;
+  service_name: string;
+  unit: string;
+  location_slug: string;
+  type: string;
+  state_code: string;
+  state_name: string;
+  city_name?: string | null;
   low: number;
   typical: number;
   high: number;
+  inputs?: {
+    rpp_year: number;
+    rpp_index: number;
+    cpi_latest: number;
+    cpi_series: string;
+    cpi_baseline: number;
+  };
   computed_at?: string;
-  inputs?: any;
 } | null;
 
 export default function EstimateCard({
@@ -67,7 +81,7 @@ export default function EstimateCard({
             </div>
             <div>
               <div style={{ fontSize: "0.875rem", color: "#6b7280" }}>Unit</div>
-              <div style={{ fontSize: "1.125rem", fontWeight: "500" }}>{service.unit}</div>
+              <div style={{ fontSize: "1.125rem", fontWeight: "500" }}>{estimate.unit || service.unit}</div>
             </div>
           </div>
 

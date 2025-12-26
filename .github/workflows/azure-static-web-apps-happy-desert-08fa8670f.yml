@@ -31,7 +31,7 @@ jobs:
       
       - name: Build Next.js static export
         env:
-          NEXT_PUBLIC_PRICING_API_BASE: https://temp-services-c3b6drdzhag3gxbw.australiacentral-01.azurewebsites.net
+          NEXT_PUBLIC_PRICING_API_BASE: https://temp-services-api.azurewebsites.net
           SITE_URL: https://happy-desert-08fa8670f.4.azurestaticapps.net
           NODE_ENV: production
         run: npm run build
