@@ -1,0 +1,84 @@
+name: Build and deploy static site to Azure
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site
+        env:
+          PRICING_API_BASE: https://temp-services-c3b6drdzhag3gxbw.australiacentral-01.azurewebsites.net
+          SITE_URL: https://temp-services-ui-bxcuevdfexcdehce.australiacentral-01.azurewebsites.net
+          NODE_ENV: production
+        run: npm run build
+      
+      - name: Verify static export
+        run: |
+          echo "✓ Checking static export..."
+          if [ ! -d "out" ]; then
+            echo "✗ ERROR: out directory not found!"
+            exit 1
+          fi
+          echo "✓ out directory created"
+          echo ""
+          echo "Sample files:"
+          find out -type f | head -20
+
+      - name: Upload static files
+        uses: actions/upload-artifact@v4
+        with:
+          name: static-site
+          path: out
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download static site
+        uses: actions/download-artifact@v4
+        with:
+          name: static-site
+          path: ./static-files
+      
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_69F2566FB7DA4448B5AEDA5CA0212EE5 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_23F24869B3934F7FA97F56B8B45570E1 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D92EDB1548F548EC89842E80176D7A4E }}
+
+      - name: Deploy to Azure Web App
+        run: |
+          echo "Creating deployment package..."
+          cd static-files
+          zip -r ../static.zip .
+          cd ..
+          
+          echo "Deploying to Azure..."
+          az webapp deployment source config-zip \
+            --resource-group temp-services \
+            --name temp-services-ui \
+            --src static.zip
+          
+          echo "✓ Deployment complete!"

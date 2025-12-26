@@ -2,6 +2,8 @@
 import { SERVICES } from "@/content/services";
 import { STATES } from "@/content/states";
 
+export const dynamic = 'force-static';
+
 export default function sitemap() {
   const base = process.env.SITE_URL ?? "https://temp-services.com";
 

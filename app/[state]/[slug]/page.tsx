@@ -32,7 +32,7 @@ async function fetchEstimate(serviceKey: string, stateSlug: string) {
   const url = `${base.replace(/\/$/, "")}/api/v1/estimates/${encodeURIComponent(serviceKey)}/${encodeURIComponent(stateSlug)}?year=2024`;
 
   try {
-    const res = await fetch(url, { next: { revalidate: 3600 } });
+    const res = await fetch(url, { cache: 'force-cache' }); // Static build - cache all API responses
     if (!res.ok) return null;
     const data = await res.json();
     return data;
