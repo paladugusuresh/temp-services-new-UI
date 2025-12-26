@@ -2,10 +2,36 @@
 import { notFound } from "next/navigation";
 import { STATES } from "@/content/states";
 import { SERVICES } from "@/content/services";
+import EstimateCard from "@/components/EstimateCard";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import DynamicEstimate from "@/components/DynamicEstimate";
 import Faq from "@/components/Faq";
 import { buildFaq } from "@/content/faqs";
+import type { Metadata } from "next";
+
+function findState(state: string) {
+  return STATES.find((s) => s.slug === state);
+}
+
+function findServiceByCostSlug(slug: string) {
+  return SERVICES.find((s) => s.slugCost === slug);
+}
+
+async function fetchEstimate(serviceKey: string, stateSlug: string) {
+  const base = process.env.NEXT_PUBLIC_PRICING_API_BASE || 'https://temp-services-c3b6drdzhag3gxbw.australiacentral-01.azurewebsites.net';
+  const url = `${base.replace(/\/$/, "")}/api/estimate?service=${encodeURIComponent(serviceKey)}&location=${encodeURIComponent(stateSlug)}`;
+
+  try {
+    const res = await fetch(url, {
+      next: { revalidate: 86400 } // Cache for 24 hours
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error(`Failed to fetch estimate for ${serviceKey} in ${stateSlug}:`, err);
+    return null;
+  }
+}
 
 function findState(state: string) {
   return STATES.find((s) => s.slug === state);
@@ -25,6 +51,22 @@ export function generateStaticParams() {
   return paths;
 }
 
+export async function generateMetadata({ params }: { params: Promise<{ state: string; slug: string }> }): Promise<Metadata> {
+  const { state, slug } = await params;
+  const st = findState(state);
+  const svc = findServiceByCostSlug(slug);
+  if (!st || !svc) return {};
+
+  const title = `${svc.name} Cost in ${st.name} | Temp Services`;
+  const description = `${svc.intro} Get estimated ${svc.name.toLowerCase()} costs in ${st.name} based on BEA Regional Price Parities and the BLS Consumer Price Index.`;
+
+  return {
+    title,
+    description,
+    openGraph: { title, description },
+  };
+}
+
 export default async function Page({ params }: { params: Promise<{ state: string; slug: string }> }) {
   const { state, slug } = await params;
   const st = findState(state);
@@ -32,6 +74,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
 
   if (!st || !svc) return notFound();
 
+  const estimate = await fetchEstimate(svc.key, st.slug);
   const faq = buildFaq(svc, st);
 
   return (
@@ -51,7 +94,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
       <p style={{ fontSize: "1.125rem", color: "#4b5563", lineHeight: "1.75" }}>{st.intro}</p>
       <p style={{ fontSize: "1.125rem", color: "#4b5563", lineHeight: "1.75" }}>{svc.intro}</p>
 
-      <DynamicEstimate serviceKey={svc.key} stateSlug={st.slug} service={svc} state={st} />
+      <EstimateCard service={svc} state={st} estimate={estimate} />
 
       <section style={{ margin: "32px 0" }}>
         <h2 style={{ fontSize: "1.875rem", fontWeight: "600", marginBottom: "16px" }}>What Affects the Price</h2>

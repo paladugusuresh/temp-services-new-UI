@@ -99,10 +99,37 @@ export default function EstimateCard({
             timing, and contractor.
           </div>
 
-          <p style={{ fontSize: "0.75rem", color: "#6b7280", marginTop: "12px", marginBottom: 0 }}>
-            Estimate updated:{" "}
-            {estimate.computed_at ? new Date(estimate.computed_at).toLocaleDateString() : "—"}
-          </p>
+          <div style={{ marginTop: "16px", padding: "12px", background: "#f3f4f6", borderRadius: "8px", fontSize: "0.875rem" }}>
+            <p style={{ margin: "0 0 8px 0", fontWeight: "600" }}>How We Calculate Estimates</p>
+            <p style={{ margin: "0 0 8px 0" }}>
+              Our estimates are based on national baseline pricing adjusted for your location using:
+            </p>
+            <ul style={{ margin: "0 0 8px 0", paddingLeft: "20px" }}>
+              <li>
+                <a 
+                  href="https://www.bea.gov/data/prices-inflation/regional-price-parities-state-and-metro-area" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{ color: "#2563eb", textDecoration: "underline" }}
+                >
+                  BEA Regional Price Parities (RPP)
+                </a> - Adjusts for cost of living differences by state
+              </li>
+              <li>
+                <a 
+                  href="https://www.bls.gov/cpi/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{ color: "#2563eb", textDecoration: "underline" }}
+                >
+                  BLS Consumer Price Index (CPI)
+                </a> - Adjusts for inflation over time
+              </li>
+            </ul>
+            <p style={{ fontSize: "0.75rem", color: "#6b7280", margin: 0 }}>
+              Last updated: {estimate.computed_at ? new Date(estimate.computed_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : "Recently"}
+            </p>
+          </div>
         </>
       )}
     </section>
