@@ -1,8 +1,7 @@
-name: Build and deploy Next.js (standalone) to Azure Web App - temp-services-ui
+name: Build and deploy Next.js to Azure App Service [DISABLED]
 
+# Disabled - using Azure Static Web Apps workflow instead
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:

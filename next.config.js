@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // Azure Static Web Apps handles Next.js SSR automatically
   images: {
     unoptimized: true,
   },
