@@ -1,9 +1,7 @@
-name: Build and deploy static site to Azure
+name: Build and deploy static site to Azure [DISABLED - using azure-static-web-apps workflow]
 
+# This workflow is disabled - using azure-static-web-apps-happy-desert-08fa8670f.yml instead
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
