@@ -50,7 +50,9 @@ export async function generateMetadata({ params }: { params: Promise<{ state: st
   if (!st || !svc) return {};
 
   const title = `${svc.name} Cost in ${st.name} | Temp Services`;
-  const description = `${svc.intro} Get estimated ${svc.name.toLowerCase()} costs in ${st.name} based on BEA Regional Price Parities and the BLS Consumer Price Index.`;
+  // Truncate intro for meta description to avoid it being too long
+  const shortIntro = svc.intro.split('.')[0] + '.';
+  const description = `${shortIntro} Get estimated ${svc.name.toLowerCase()} costs in ${st.name} based on BEA Regional Price Parities and the BLS Consumer Price Index.`;
 
   return {
     title,
@@ -108,6 +110,21 @@ export default async function Page({ params }: { params: Promise<{ state: string
           {svc.notIncluded.map((d) => <li key={d}>{d}</li>)}
         </ul>
       </section>
+
+      {svc.tips && svc.tips.length > 0 && (
+        <section style={{ 
+          margin: "32px 0",
+          padding: "24px",
+          backgroundColor: "#f0fdf4", // green-50
+          borderRadius: "12px",
+          border: "1px solid #bbf7d0" // green-200
+        }}>
+          <h2 style={{ fontSize: "1.875rem", fontWeight: "600", marginBottom: "16px", color: "#166534" }}>Pro Tips for {svc.name}</h2>
+          <ul style={{ color: "#15803d", lineHeight: "1.75", paddingLeft: "20px" }}>
+            {svc.tips.map((tip) => <li key={tip} style={{ marginBottom: "8px" }}>{tip}</li>)}
+          </ul>
+        </section>
+      )}
 
       <section style={{
         background: "#eff6ff",
