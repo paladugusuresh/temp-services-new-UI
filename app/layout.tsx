@@ -28,9 +28,10 @@ export default function RootLayout({
               </a>
             </div>
             <nav>
+              <a href="/services/">Services</a>
+              <a href="/guides/">Guides</a>
               <a href="/about/">About</a>
               <a href="/contact/">Contact</a>
-              <a href="/privacy-policy/">Privacy</a>
             </nav>
           </div>
         </header>
@@ -48,8 +49,17 @@ export default function RootLayout({
               <div>
                 <h3>Quick Links</h3>
                 <ul>
+                  <li><a href="/services/">All Services</a></li>
+                  <li><a href="/guides/">Hiring Guides</a></li>
                   <li><a href="/about/">About Us</a></li>
                   <li><a href="/contact/">Contact</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3>Resources</h3>
+                <ul>
+                  <li><a href="/guides/#getting-multiple-quotes">Getting Quotes</a></li>
+                  <li><a href="/guides/#avoiding-scams">Avoiding Scams</a></li>
                   <li><a href="/disclaimer/">Disclaimer</a></li>
                   <li><a href="/privacy-policy/">Privacy Policy</a></li>
                 </ul>

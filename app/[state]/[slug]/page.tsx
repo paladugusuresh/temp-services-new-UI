@@ -5,7 +5,11 @@ import { SERVICES } from "@/content/services";
 import EstimateCard from "@/components/EstimateCard";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import Faq from "@/components/Faq";
+import HiringGuide from "@/components/HiringGuide";
+import RegionalInsights from "@/components/RegionalInsights";
 import { buildFaq } from "@/content/faqs";
+import { getGuideForService } from "@/content/guides";
+import { getInsightsForState } from "@/content/regional-insights";
 import type { Metadata } from "next";
 
 function findState(state: string) {
@@ -70,6 +74,8 @@ export default async function Page({ params }: { params: Promise<{ state: string
 
   const estimate = await fetchEstimate(svc.key, st.slug);
   const faq = buildFaq(svc, st);
+  const guide = getGuideForService(svc.key);
+  const insights = getInsightsForState(st.slug);
 
   return (
     <main style={{ maxWidth: "980px", margin: "0 auto", padding: "24px", fontFamily: "system-ui, sans-serif" }}>
@@ -91,21 +97,30 @@ export default async function Page({ params }: { params: Promise<{ state: string
       <EstimateCard service={svc} state={st} estimate={estimate} />
 
       <section style={{ margin: "32px 0" }}>
-        <h2 style={{ fontSize: "1.875rem", fontWeight: "600", marginBottom: "16px" }}>What Affects the Price</h2>
+        <h2 style={{ fontSize: "1.875rem", fontWeight: "600", marginBottom: "16px" }}>What Affects the Price of {svc.name} in {st.name}</h2>
+        <p style={{ color: "#64748b", marginBottom: "16px" }}>
+          Several factors influence how much you'll pay for {svc.name.toLowerCase()} services in {st.name}. Understanding these cost drivers helps you budget accurately and evaluate quotes from contractors:
+        </p>
         <ul style={{ color: "#4b5563", lineHeight: "1.75" }}>
           {svc.drivers.map((d) => <li key={d}>{d}</li>)}
         </ul>
       </section>
 
       <section style={{ margin: "32px 0" }}>
-        <h2 style={{ fontSize: "1.875rem", fontWeight: "600", marginBottom: "16px" }}>What's Usually Included</h2>
+        <h2 style={{ fontSize: "1.875rem", fontWeight: "600", marginBottom: "16px" }}>What's Typically Included in {svc.name} Services</h2>
+        <p style={{ color: "#64748b", marginBottom: "16px" }}>
+          When you hire a {svc.name.toLowerCase()} professional in {st.name}, these services are generally part of a standard job:
+        </p>
         <ul style={{ color: "#4b5563", lineHeight: "1.75" }}>
           {svc.included.map((d) => <li key={d}>{d}</li>)}
         </ul>
       </section>
 
       <section style={{ margin: "32px 0" }}>
-        <h2 style={{ fontSize: "1.875rem", fontWeight: "600", marginBottom: "16px" }}>What's Usually Not Included</h2>
+        <h2 style={{ fontSize: "1.875rem", fontWeight: "600", marginBottom: "16px" }}>What's Usually Not Included (May Cost Extra)</h2>
+        <p style={{ color: "#64748b", marginBottom: "16px" }}>
+          Be aware that these items are typically not included in standard quotes and may require additional fees:
+        </p>
         <ul style={{ color: "#4b5563", lineHeight: "1.75" }}>
           {svc.notIncluded.map((d) => <li key={d}>{d}</li>)}
         </ul>
@@ -115,16 +130,25 @@ export default async function Page({ params }: { params: Promise<{ state: string
         <section style={{ 
           margin: "32px 0",
           padding: "24px",
-          backgroundColor: "#f0fdf4", // green-50
+          backgroundColor: "#f0fdf4",
           borderRadius: "12px",
-          border: "1px solid #bbf7d0" // green-200
+          border: "1px solid #bbf7d0"
         }}>
-          <h2 style={{ fontSize: "1.875rem", fontWeight: "600", marginBottom: "16px", color: "#166534" }}>Pro Tips for {svc.name}</h2>
+          <h2 style={{ fontSize: "1.875rem", fontWeight: "600", marginBottom: "16px", color: "#166534" }}>Expert Tips for {svc.name} in {st.name}</h2>
+          <p style={{ color: "#15803d", marginBottom: "16px" }}>
+            Follow these pro tips to get the best value and results for your {svc.name.toLowerCase()} project:
+          </p>
           <ul style={{ color: "#15803d", lineHeight: "1.75", paddingLeft: "20px" }}>
             {svc.tips.map((tip) => <li key={tip} style={{ marginBottom: "8px" }}>{tip}</li>)}
           </ul>
         </section>
       )}
+
+      {/* Hiring Guide Section - Adds substantial unique value */}
+      {guide && <HiringGuide guide={guide} serviceName={svc.name} />}
+
+      {/* Regional Insights Section - Adds state-specific value */}
+      {insights && <RegionalInsights insights={insights} stateName={st.name} />}
 
       <section style={{
         background: "#eff6ff",
@@ -135,24 +159,49 @@ export default async function Page({ params }: { params: Promise<{ state: string
       }}>
         <h2 style={{ fontSize: "1.5rem", fontWeight: "600", marginTop: 0 }}>How This Estimate is Calculated</h2>
         <p style={{ lineHeight: "1.75", marginBottom: "12px" }}>
-          This page shows an <strong>estimated cost range</strong>, not a quote.
+          This page shows an <strong>estimated cost range</strong> for {svc.name.toLowerCase()} in {st.name}, not a quote from a specific contractor.
+        </p>
+        <p style={{ lineHeight: "1.75", marginBottom: "12px" }}>
+          Our methodology uses official government data to provide transparent, defensible estimates:
         </p>
         <ol style={{ lineHeight: "1.75", paddingLeft: "20px" }}>
-          <li>Start with a national baseline range for the service</li>
-          <li>Adjust for state price levels using <strong>BEA Regional Price Parities (RPP)</strong></li>
-          <li>Adjust for inflation using the <strong>BLS Consumer Price Index (CPI-U)</strong></li>
+          <li><strong>National Baseline:</strong> We start with a researched baseline range for {svc.name.toLowerCase()} services nationwide</li>
+          <li><strong>Regional Adjustment:</strong> We apply <strong>BEA Regional Price Parities (RPP)</strong> to adjust for {st.name}'s specific cost of living</li>
+          <li><strong>Inflation Adjustment:</strong> We use the <strong>BLS Consumer Price Index (CPI-U)</strong> to ensure estimates reflect current pricing</li>
         </ol>
         <p style={{ lineHeight: "1.75", marginBottom: 0 }}>
-          Actual prices vary by job size, access, materials, timing, and contractor. Get multiple local quotes before you
-          book.
+          <strong>Important:</strong> Actual prices vary by job size, access, materials, timing, and contractor. These estimates are for planning purposes only. Always get multiple local quotes before hiring.
         </p>
       </section>
 
       <Faq items={faq} />
 
+      {/* Additional SEO Content */}
+      <section style={{ marginTop: "48px", padding: "24px", backgroundColor: "#f9fafb", borderRadius: "12px" }}>
+        <h2 style={{ fontSize: "1.5rem", fontWeight: "600", marginBottom: "16px" }}>
+          Finding Quality {svc.name} Services in {st.name}
+        </h2>
+        <p style={{ color: "#4b5563", lineHeight: "1.75", marginBottom: "16px" }}>
+          When searching for {svc.name.toLowerCase()} professionals in {st.name}, it's important to do your research. 
+          Start by getting at least three quotes from different contractors to compare pricing and understand the market rate in your area. 
+          Look for contractors who are licensed and insured in {st.name}, and don't hesitate to ask for references from recent jobs.
+        </p>
+        <p style={{ color: "#4b5563", lineHeight: "1.75", marginBottom: "16px" }}>
+          The estimates on this page are based on {st.name}'s specific cost factors, including local labor rates, 
+          material costs, and regional economic conditions. However, your actual quote may be higher or lower 
+          depending on the specific requirements of your project.
+        </p>
+        <p style={{ color: "#4b5563", lineHeight: "1.75" }}>
+          Remember that the lowest quote isn't always the best value. Consider the contractor's experience, 
+          reviews, warranty policies, and communication style when making your decision. A slightly higher 
+          price from a reputable contractor often provides better long-term value than a bargain rate from 
+          an unknown provider.
+        </p>
+      </section>
+
       <p style={{ fontSize: "0.875rem", color: "#9ca3af", marginTop: "48px", borderTop: "1px solid #e5e7eb", paddingTop: "16px" }}>
         <strong>Disclaimer:</strong> Estimates vary based on job size, access, materials, timing, and contractor. This is
-        not a guarantee of actual pricing. Always get multiple local quotes.
+        not a guarantee of actual pricing. Always get multiple local quotes. Last updated: January 2026.
       </p>
     </main>
   );
