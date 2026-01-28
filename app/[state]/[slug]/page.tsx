@@ -7,9 +7,12 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import Faq from "@/components/Faq";
 import HiringGuide from "@/components/HiringGuide";
 import RegionalInsights from "@/components/RegionalInsights";
+import EditorialInfo from "@/components/EditorialInfo";
+import LocalTips from "@/components/LocalTips";
 import { buildFaq } from "@/content/faqs";
 import { getGuideForService } from "@/content/guides";
 import { getInsightsForState } from "@/content/regional-insights";
+import { getStateServiceTips } from "@/content/state-service-tips";
 import type { Metadata } from "next";
 
 function findState(state: string) {
@@ -76,6 +79,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
   const faq = buildFaq(svc, st);
   const guide = getGuideForService(svc.key);
   const insights = getInsightsForState(st.slug);
+  const localTips = getStateServiceTips(st.slug, svc.key, st.name, svc.name);
 
   return (
     <main style={{ maxWidth: "980px", margin: "0 auto", padding: "24px", fontFamily: "system-ui, sans-serif" }}>
@@ -144,11 +148,17 @@ export default async function Page({ params }: { params: Promise<{ state: string
         </section>
       )}
 
+      {/* State-Specific Local Tips - Unique value per state/service combination */}
+      <LocalTips tips={localTips} stateName={st.name} serviceName={svc.name} />
+
       {/* Hiring Guide Section - Adds substantial unique value */}
       {guide && <HiringGuide guide={guide} serviceName={svc.name} />}
 
       {/* Regional Insights Section - Adds state-specific value */}
       {insights && <RegionalInsights insights={insights} stateName={st.name} />}
+
+      {/* Editorial Info - E-E-A-T signals */}
+      <EditorialInfo serviceName={svc.name} stateName={st.name} />
 
       <section style={{
         background: "#eff6ff",
@@ -203,6 +213,52 @@ export default async function Page({ params }: { params: Promise<{ state: string
         <strong>Disclaimer:</strong> Estimates vary based on job size, access, materials, timing, and contractor. This is
         not a guarantee of actual pricing. Always get multiple local quotes. Last updated: January 2026.
       </p>
+
+      {/* Schema.org Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": `${svc.name} Cost in ${st.name}`,
+            "description": `${svc.intro.split('.')[0]}. Get estimated ${svc.name.toLowerCase()} costs in ${st.name}.`,
+            "author": {
+              "@type": "Organization",
+              "name": "Temp Services Editorial Team",
+              "url": "https://temp-services.com/about/"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Temp Services",
+              "url": "https://temp-services.com/"
+            },
+            "datePublished": "2025-06-01",
+            "dateModified": "2026-01-28",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": `https://temp-services.com/${st.slug}/${svc.slugCost}/`
+            }
+          })
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": faq.slice(0, 5).map(item => ({
+              "@type": "Question",
+              "name": item.question,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": item.answer
+              }
+            }))
+          })
+        }}
+      />
     </main>
   );
 }

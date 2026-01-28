@@ -247,6 +247,192 @@ export const EDUCATIONAL_TIPS: EducationalTip[] = [
       "Extended warranties aren't always worth the cost—evaluate each case",
       "Document everything: photos, receipts, and warranty terms"
     ]
+  },
+  {
+    id: "emergency-repairs-guide",
+    title: "Emergency Home Repairs: When to Call Now vs. When to Wait",
+    introduction: "Not every home problem is an emergency, but some issues require immediate attention to prevent costly damage or safety hazards. Knowing the difference can save you thousands in emergency service fees—or prevent a minor issue from becoming a catastrophe.",
+    sections: [
+      {
+        heading: "True Emergencies That Require Immediate Action",
+        content: "Some situations demand you stop everything and call for help immediately. Gas leaks (smell of rotten eggs or hissing near gas lines) require evacuating and calling your gas company. Active water flooding from burst pipes needs the water main shut off immediately. Electrical sparking, burning smells, or a hot electrical panel are fire hazards. Sewage backing up into your home is a health emergency. For these situations, call emergency services even if it's 3 AM on a holiday—the cost of waiting far exceeds the emergency service premium."
+      },
+      {
+        heading: "Urgent But Not Emergency Situations",
+        content: "These problems need attention within 24-48 hours but don't require middle-of-the-night calls. A water heater not producing hot water is uncomfortable but not dangerous. A single clogged drain (when others work fine) can wait for regular business hours. AC failure during a heat wave is urgent but can often wait until morning. A non-functional refrigerator gives you about 4 hours before food safety becomes a concern if you keep the door closed. For these, call first thing in the morning rather than paying 2x emergency rates."
+      },
+      {
+        heading: "Problems That Can Wait for a Scheduled Appointment",
+        content: "Many issues feel urgent in the moment but can safely wait for a convenient appointment. A slowly dripping faucet wastes water but won't cause immediate damage. Minor roof leaks during a rainstorm (catch the water in a bucket) can wait for dry weather. Cosmetic damage like a broken cabinet door or chipped tile has no deadline. Appliances that work but make new noises should be checked soon but aren't emergencies. For these, schedule regular appointments and avoid premium pricing."
+      },
+      {
+        heading: "How to Handle After-Hours Emergencies",
+        content: "When true emergencies strike outside business hours, know your options. Many utility companies have 24/7 emergency lines for gas and electrical issues—these are often free or low cost. Keep a list of contractors you've used before who offer emergency service. If calling a new company, verify they're licensed before they arrive. Get a price quote before authorizing work—some companies take advantage of emergencies. Take photos of the problem and any damage for insurance purposes."
+      },
+      {
+        heading: "Preventing Emergencies Through Preparation",
+        content: "The best emergency is one that never happens. Know where your water main shutoff, gas shutoff, and electrical panel are located. Keep basic tools accessible: plunger, adjustable wrench, flashlight, and duct tape for temporary fixes. Maintain your major systems—annual HVAC service and water heater flushing prevent many failures. Build relationships with reliable contractors before you need emergency help. Keep emergency numbers posted where everyone in the household can find them."
+      }
+    ],
+    keyTakeaways: [
+      "Gas leaks, flooding, electrical sparks, and sewage backup are true emergencies—call immediately",
+      "Most other issues can wait for regular business hours to avoid premium rates",
+      "Know where your water, gas, and electrical shutoffs are located",
+      "Keep a list of trusted contractors before emergencies happen",
+      "Take photos of damage for insurance before cleanup begins"
+    ]
+  },
+  {
+    id: "home-maintenance-budgeting",
+    title: "Budgeting for Home Maintenance: The 1% Rule and Beyond",
+    introduction: "Homeownership comes with ongoing maintenance costs that catch many new owners off guard. Whether you follow the 1% rule or create a detailed maintenance fund, having a plan prevents deferred maintenance from becoming expensive emergency repairs.",
+    sections: [
+      {
+        heading: "The 1% Rule Explained",
+        content: "A common guideline suggests budgeting 1% of your home's value annually for maintenance. For a $300,000 home, that's $3,000 per year or $250 per month. This covers routine maintenance like HVAC servicing, gutter cleaning, minor repairs, and builds a reserve for larger expenses. Some experts recommend 1-4% depending on home age—newer homes need less, older homes significantly more. The key is consistency: saving monthly prevents financial stress when the water heater fails."
+      },
+      {
+        heading: "Major Systems and Their Lifespans",
+        content: "Understanding when major systems need replacement helps you plan. Roofs last 20-30 years depending on material. HVAC systems average 15-20 years. Water heaters last 10-15 years. Exterior paint needs refreshing every 5-10 years. Appliances vary from 10-20 years. If your home has systems approaching these ages, increase your maintenance budget. Knowing a 15-year-old water heater could fail any time lets you save proactively rather than scrambling for emergency funds."
+      },
+      {
+        heading: "Creating a Maintenance Calendar",
+        content: "Scheduled maintenance prevents expensive breakdowns. Spring: clean gutters, check AC, inspect roof after winter. Summer: check deck condition, clean dryer vents, service irrigation. Fall: furnace tune-up, clean gutters again, winterize outdoor faucets. Winter: check for ice dams, inspect visible pipes, test smoke/CO detectors. Assign approximate costs to each task and spread spending throughout the year rather than facing all expenses in one season."
+      },
+      {
+        heading: "When to DIY vs. Hire Out",
+        content: "Doing simple maintenance yourself stretches your budget further. Changing HVAC filters, cleaning gutters (if you're comfortable on ladders), caulking windows, and basic landscaping are accessible to most homeowners. But attempting complex work often costs more when you have to hire someone to fix mistakes. Electrical, plumbing involving supply lines, gas appliances, and structural work should be left to professionals. Calculate your time's value—if a pro can do a task in 2 hours that takes you 10, hiring out may make sense."
+      },
+      {
+        heading: "Building Your Maintenance Fund",
+        content: "Start by opening a dedicated savings account for home maintenance. Set up automatic transfers each month based on the 1% rule or your calculated needs. When you receive windfalls—tax refunds, bonuses—consider adding to the fund. If a major system is aging, temporarily increase contributions. The goal is having 6-12 months of expected maintenance costs available. This fund also serves as your emergency buffer when unexpected issues arise."
+      },
+      {
+        heading: "Tracking and Adjusting Your Budget",
+        content: "Keep records of all maintenance spending—this data helps refine your budget over time. After a year or two, you'll see your home's actual patterns: maybe your old windows need more caulking, or your wooded lot requires extra gutter cleaning. Track by category: HVAC, plumbing, electrical, exterior, interior, landscaping. If spending consistently exceeds your budget, adjust it. If you're consistently under, you may be deferring necessary maintenance."
+      }
+    ],
+    keyTakeaways: [
+      "Budget 1-4% of your home's value annually for maintenance, depending on age",
+      "Know when major systems (roof, HVAC, water heater) are due for replacement",
+      "Create a seasonal maintenance calendar to spread costs throughout the year",
+      "DIY simple tasks to stretch your budget, but leave complex work to professionals",
+      "Keep a dedicated savings account for home maintenance and emergencies"
+    ]
+  },
+  {
+    id: "negotiating-contractor-prices",
+    title: "How to Negotiate with Contractors Without Burning Bridges",
+    introduction: "Good negotiation isn't about beating down the lowest bidder—it's about getting fair value while building a relationship with a contractor you might need again. Here's how to negotiate professionally and effectively.",
+    sections: [
+      {
+        heading: "Do Your Research First",
+        content: "Effective negotiation starts with knowledge. Before discussing price, understand typical costs for your project using resources like cost guides, talking to neighbors who've done similar work, and getting multiple quotes. When you know the market rate, you can negotiate from facts rather than feelings. A contractor is more likely to negotiate when they know you understand the real value of the work—they can't overcharge an informed customer."
+      },
+      {
+        heading: "Understand What's Negotiable",
+        content: "Price isn't the only variable. Timeline flexibility often saves money—contractors charge premiums for rush work but may discount for slow-season scheduling. Materials have ranges—you might accept a different brand or finish for savings. Scope can be adjusted—maybe you paint yourself or handle demolition. Payment terms might be negotiable—a larger deposit could earn a discount if it helps contractor cash flow. Think creatively about what you value most."
+      },
+      {
+        heading: "How to Ask for a Better Price",
+        content: "Approach negotiation as collaboration, not confrontation. Share that you're comparing quotes without revealing competitors' prices initially. Ask 'Is there any flexibility on pricing?' rather than demanding specific discounts. If you have a lower quote, ask 'I received a lower bid—is there anything you can do to be more competitive?' If they can't match it, ask why—there may be quality or scope differences that justify their price."
+      },
+      {
+        heading: "When Not to Negotiate",
+        content: "Sometimes negotiation isn't appropriate. If a contractor's price is already fair and they're highly recommended, pushing for discounts risks losing them. If they're very busy, they have no incentive to negotiate. For small jobs where their margin is already thin, asking for discounts may result in corners being cut. Specialized work with few qualified providers gives you less leverage. Read the situation—forcing negotiation can start the relationship on the wrong foot."
+      },
+      {
+        heading: "Building Long-Term Relationships",
+        content: "The best 'negotiation' is being a great repeat customer. Reliable clients who pay on time, don't micromanage, and refer others earn contractor loyalty. This translates to priority scheduling, fair pricing without negotiation, and going the extra mile on work quality. After good experiences, tell the contractor you'll call them first for future work. Build a roster of trusted contractors across trades—this network becomes invaluable over years of homeownership."
+      },
+      {
+        heading: "Putting Agreements in Writing",
+        content: "Whatever you negotiate, document it. The final contract should reflect agreed-upon price, scope, materials, timeline, and payment schedule. Don't rely on verbal agreements—write 'per our discussion' and list the terms in an email if a formal contract isn't provided. This protects both parties and prevents misunderstandings. If a contractor resists putting terms in writing, that's a red flag."
+      }
+    ],
+    keyTakeaways: [
+      "Know market rates before negotiating—informed customers get better deals",
+      "Consider negotiating timeline, materials, or scope, not just price",
+      "Ask for flexibility professionally, not aggressively",
+      "Don't push negotiation when it's not appropriate or when prices are already fair",
+      "Build long-term relationships for better service and pricing over time"
+    ]
+  },
+  {
+    id: "permits-inspections-guide",
+    title: "Home Improvement Permits: What Requires Permits and Why",
+    introduction: "Pulling permits feels like bureaucratic hassle, but unpermitted work can void insurance, complicate home sales, and create safety hazards. Understanding when permits are required and why they matter protects your investment and your family.",
+    sections: [
+      {
+        heading: "Work That Almost Always Requires Permits",
+        content: "Some projects require permits in virtually all jurisdictions. Structural changes (removing walls, adding rooms, changing rooflines) always need permits. Electrical panel upgrades, new circuits, and major rewiring require permits. Plumbing changes that modify supply or drain lines, new HVAC systems or significant modifications, and water heater replacements typically need permits. Window and door replacements may require permits, especially if sizes change. When in doubt, call your local building department—they'll tell you what's required for your specific project."
+      },
+      {
+        heading: "Work That Usually Doesn't Need Permits",
+        content: "Many improvements are exempt from permits. Cosmetic changes like painting, flooring, and cabinet refacing don't require permits. Replacing fixtures with same-type fixtures (light for light, faucet for faucet) is typically exempt. Minor repairs using similar materials (patching drywall, replacing a few shingles) don't need permits. Small decks and fences often have exemptions below certain sizes. Landscaping rarely requires permits unless involving retaining walls or drainage changes. However, exemptions vary by locality—verify with your building department."
+      },
+      {
+        heading: "Why Permits Matter for Safety",
+        content: "Permits exist to ensure work meets building codes designed to protect life and property. Electrical codes prevent fires and electrocution. Plumbing codes ensure safe water supply and proper drainage. Structural codes prevent collapses. When a permitted project fails inspection, the contractor must fix the issue before you move forward—this catches problems before they become disasters. Unpermitted work by unqualified hands can create hazards hidden behind walls for years."
+      },
+      {
+        heading: "How Permits Affect Home Sales",
+        content: "When selling your home, buyers' inspectors and agents will look for permit history. Unpermitted additions or major work raises red flags—buyers may walk away, demand significant price reductions, or require you to legalize the work. Title companies may refuse to insure properties with significant unpermitted work. Some buyers request permit records for renovations. Even if you never sell, unpermitted work can complicate refinancing. The permit process is much cheaper and easier than retroactive legalization."
+      },
+      {
+        heading: "The Permit Process",
+        content: "While processes vary by location, the general flow is consistent. Submit plans showing proposed work to your building department. Pay permit fees (typically based on project value). Receive approval or requests for modifications. Display the permit at the job site. Schedule inspections at required stages (rough, final). Receive certificate of completion. Your contractor should handle most of this, but you're ultimately responsible for ensuring permits are obtained. Never let a contractor convince you to skip permits to save money or time."
+      },
+      {
+        heading: "What If Previous Work Wasn't Permitted?",
+        content: "If you discover unpermitted work in your home, you have options. For minor work, living with it may be fine—but disclose it when selling. For major work, consider retroactive permitting: apply for permits, have the work inspected, and make any required corrections. This can be expensive if walls need to be opened for inspection. In some cases, you can get permits for 'existing conditions' that are brought up to current code. Consult with your local building department about the best approach—they'd rather help you legalize work than ignore hazards."
+      }
+    ],
+    keyTakeaways: [
+      "Structural, electrical, plumbing, and HVAC work almost always needs permits",
+      "Cosmetic changes and minor repairs typically don't require permits",
+      "Permits protect safety through code-compliant inspections",
+      "Unpermitted work creates complications when selling your home",
+      "Never let contractors convince you to skip required permits"
+    ]
+  },
+  {
+    id: "reading-reviews-effectively",
+    title: "How to Read Online Reviews: Finding Truth in the Noise",
+    introduction: "Online reviews are valuable but imperfect tools for evaluating contractors. Learning to read between the lines, spot fake reviews, and weight feedback appropriately helps you make better hiring decisions.",
+    sections: [
+      {
+        heading: "Looking for Patterns, Not Extremes",
+        content: "Individual reviews tell stories; patterns reveal truth. One bad review among dozens of good ones might be an anomaly or unreasonable customer. But if multiple reviews mention the same issue—poor communication, schedule delays, cleanup problems—take notice. Similarly, consistent praise for specific qualities (punctuality, fair pricing, quality work) is more meaningful than occasional 5-star reviews. Read enough reviews to identify what consistently appears across different customers."
+      },
+      {
+        heading: "Spotting Fake Reviews",
+        content: "Unfortunately, fake reviews exist on both ends. Warning signs for fake positive reviews: vague praise without specifics, reviewer has only reviewed this one business, multiple reviews posted the same day, overly enthusiastic language, or reviews that sound similar to each other. Fake negative reviews (sometimes from competitors) often include extreme language, very few details, or reference issues that don't match the business's actual services. Middle-ground reviews with specific details are typically most trustworthy."
+      },
+      {
+        heading: "The Value of How Companies Respond",
+        content: "Pay close attention to how businesses respond to negative reviews. Professional, apologetic responses that offer to make things right suggest a company that cares about customer satisfaction. Defensive, argumentative, or attacking responses reveal how they'll treat you if problems arise. No responses to negative reviews might indicate they don't monitor feedback or don't care. Some of the most valuable insights come from watching how companies handle criticism, not praise."
+      },
+      {
+        heading: "Using Multiple Platforms",
+        content: "Don't rely on a single review source. Check Google, Yelp, BBB, Angi, HomeAdvisor, and industry-specific platforms. Some companies cultivate reviews on one platform while ignoring others. Consistent feedback across platforms is more reliable than great reviews on only one site. Also check social media and neighborhood forums like Nextdoor for unfiltered local opinions. The more sources you check, the more complete picture you'll get."
+      },
+      {
+        heading: "Recency and Volume Matter",
+        content: "A company with 500 reviews from 5 years ago tells you less than one with 50 reviews from the past year. Businesses change—ownership, staff, and quality can shift over time. Prioritize recent reviews that reflect current operations. However, a brand new company with only glowing reviews lacks track record. Ideally, find companies with consistent positive reviews over time, showing sustained quality rather than a short hot streak."
+      },
+      {
+        heading: "Reviews as Starting Points, Not Decisions",
+        content: "Reviews help narrow your list but shouldn't make final decisions alone. Use them to identify 3-5 promising candidates, then do deeper research. Check licensing and insurance. Get quotes and compare. Call references. Meet the contractor. Trust your in-person impressions alongside online feedback. A company with slightly lower ratings but great communication and fair pricing might be better than a 5-star company that's unresponsive to your calls."
+      }
+    ],
+    keyTakeaways: [
+      "Look for patterns across multiple reviews, not individual extremes",
+      "Learn to spot fake reviews by watching for vague praise or extreme criticism",
+      "How companies respond to negative reviews reveals their true character",
+      "Check multiple platforms for a complete picture",
+      "Use reviews to narrow options, then verify with quotes, references, and in-person meetings"
+    ]
   }
 ];
 

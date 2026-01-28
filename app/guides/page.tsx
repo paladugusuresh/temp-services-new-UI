@@ -33,7 +33,7 @@ export default function GuidesPage() {
           {EDUCATIONAL_TIPS.map((tip) => (
             <li key={tip.id}>
               <a 
-                href={`#${tip.id}`}
+                href={`/guides/${tip.id}/`}
                 style={{ color: "#0284c7", textDecoration: "none" }}
               >
                 → {tip.title}
@@ -43,20 +43,57 @@ export default function GuidesPage() {
         </ul>
       </nav>
 
-      {/* Featured Articles */}
+      {/* Featured Articles - Now linking to individual pages */}
       <section style={{ marginBottom: "48px" }}>
         <h2 style={{ fontSize: "1.75rem", fontWeight: "700", marginBottom: "24px" }}>
           Featured Guides
         </h2>
         
-        {EDUCATIONAL_TIPS.map((tip, index) => (
+        <div style={{ display: "grid", gap: "24px", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}>
+          {EDUCATIONAL_TIPS.map((tip) => (
+            <a
+              key={tip.id}
+              href={`/guides/${tip.id}/`}
+              style={{
+                display: "block",
+                padding: "24px",
+                backgroundColor: "#f9fafb",
+                borderRadius: "12px",
+                border: "1px solid #e5e7eb",
+                textDecoration: "none"
+              }}
+            >
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "700", color: "#111", marginTop: 0, marginBottom: "12px" }}>
+                {tip.title}
+              </h3>
+              <p style={{ 
+                fontSize: "0.9375rem", 
+                color: "#4b5563", 
+                lineHeight: "1.6", 
+                marginBottom: "16px"
+              }}>
+                {tip.introduction.slice(0, 150)}...
+              </p>
+              <span style={{ color: "#2563eb", fontWeight: "500" }}>Read full guide →</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* Detailed Articles Section - Shows preview content */}
+      <section style={{ marginTop: "48px", paddingTop: "32px", borderTop: "1px solid #e5e7eb" }}>
+        <h2 style={{ fontSize: "1.75rem", fontWeight: "700", marginBottom: "24px" }}>
+          Guide Previews
+        </h2>
+        
+        {EDUCATIONAL_TIPS.slice(0, 3).map((tip, index) => (
           <article 
             key={tip.id}
             id={tip.id}
             style={{
               marginBottom: "48px",
               paddingBottom: "48px",
-              borderBottom: index < EDUCATIONAL_TIPS.length - 1 ? "1px solid #e5e7eb" : "none"
+              borderBottom: index < 2 ? "1px solid #e5e7eb" : "none"
             }}
           >
             <h3 style={{ fontSize: "1.5rem", fontWeight: "700", color: "#111", marginBottom: "16px" }}>
@@ -75,7 +112,7 @@ export default function GuidesPage() {
               {tip.introduction}
             </p>
             
-            {tip.sections.map((section, sectionIndex) => (
+            {tip.sections.slice(0, 2).map((section, sectionIndex) => (
               <div key={sectionIndex} style={{ marginBottom: "20px" }}>
                 <h4 style={{ fontSize: "1.15rem", fontWeight: "600", color: "#1f2937", marginBottom: "8px" }}>
                   {section.heading}
