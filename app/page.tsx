@@ -1,8 +1,12 @@
 // app/page.tsx
 import { STATES } from "@/content/states";
 import { SERVICES } from "@/content/services";
+import CostCompare from "@/components/CostCompare";
 
 export default function HomePage() {
+  const serviceOptions = SERVICES.map(s => ({ key: s.key, name: s.name, slugCost: s.slugCost }));
+  const stateOptions = STATES.map(s => ({ slug: s.slug, name: s.name, code: s.code }));
+
   return (
     <div className="page-container">
       <section className="hero">
@@ -48,6 +52,15 @@ export default function HomePage() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Interactive Cost Comparison Tool */}
+      <section className="section" style={{ marginBottom: "32px" }}>
+        <h2 style={{ marginBottom: "8px" }}>Cost Comparison Tool</h2>
+        <p style={{ color: "#6b7280", marginBottom: "20px" }}>
+          Use our interactive tool to compare what the same service costs in different states — powered by live data from our pricing API:
+        </p>
+        <CostCompare services={serviceOptions} states={stateOptions} />
       </section>
 
       <section className="section">

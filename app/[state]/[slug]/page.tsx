@@ -9,10 +9,12 @@ import HiringGuide from "@/components/HiringGuide";
 import RegionalInsights from "@/components/RegionalInsights";
 import EditorialInfo from "@/components/EditorialInfo";
 import LocalTips from "@/components/LocalTips";
+import ServiceInsights from "@/components/ServiceInsights";
 import { buildFaq } from "@/content/faqs";
 import { getGuideForService } from "@/content/guides";
 import { getInsightsForState } from "@/content/regional-insights";
 import { getStateServiceTips } from "@/content/state-service-tips";
+import { getServiceInsight } from "@/content/service-insights";
 import type { Metadata } from "next";
 
 function findState(state: string) {
@@ -80,6 +82,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
   const guide = getGuideForService(svc.key);
   const insights = getInsightsForState(st.slug);
   const localTips = getStateServiceTips(st.slug, svc.key, st.name, svc.name);
+  const serviceInsight = getServiceInsight(svc.key);
 
   return (
     <main style={{ maxWidth: "980px", margin: "0 auto", padding: "24px", fontFamily: "system-ui, sans-serif" }}>
@@ -148,6 +151,9 @@ export default async function Page({ params }: { params: Promise<{ state: string
         </section>
       )}
 
+      {/* Unique Service Editorial Content — hand-written per service */}
+      {serviceInsight && <ServiceInsights insight={serviceInsight} serviceName={svc.name} />}
+
       {/* State-Specific Local Tips - Unique value per state/service combination */}
       <LocalTips tips={localTips} stateName={st.name} serviceName={svc.name} />
 
@@ -185,29 +191,6 @@ export default async function Page({ params }: { params: Promise<{ state: string
       </section>
 
       <Faq items={faq} />
-
-      {/* Additional SEO Content */}
-      <section style={{ marginTop: "48px", padding: "24px", backgroundColor: "#f9fafb", borderRadius: "12px" }}>
-        <h2 style={{ fontSize: "1.5rem", fontWeight: "600", marginBottom: "16px" }}>
-          Finding Quality {svc.name} Services in {st.name}
-        </h2>
-        <p style={{ color: "#4b5563", lineHeight: "1.75", marginBottom: "16px" }}>
-          When searching for {svc.name.toLowerCase()} professionals in {st.name}, it's important to do your research. 
-          Start by getting at least three quotes from different contractors to compare pricing and understand the market rate in your area. 
-          Look for contractors who are licensed and insured in {st.name}, and don't hesitate to ask for references from recent jobs.
-        </p>
-        <p style={{ color: "#4b5563", lineHeight: "1.75", marginBottom: "16px" }}>
-          The estimates on this page are based on {st.name}'s specific cost factors, including local labor rates, 
-          material costs, and regional economic conditions. However, your actual quote may be higher or lower 
-          depending on the specific requirements of your project.
-        </p>
-        <p style={{ color: "#4b5563", lineHeight: "1.75" }}>
-          Remember that the lowest quote isn't always the best value. Consider the contractor's experience, 
-          reviews, warranty policies, and communication style when making your decision. A slightly higher 
-          price from a reputable contractor often provides better long-term value than a bargain rate from 
-          an unknown provider.
-        </p>
-      </section>
 
       <p style={{ fontSize: "0.875rem", color: "#9ca3af", marginTop: "48px", borderTop: "1px solid #e5e7eb", paddingTop: "16px" }}>
         <strong>Disclaimer:</strong> Estimates vary based on job size, access, materials, timing, and contractor. This is
