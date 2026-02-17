@@ -1,6 +1,8 @@
 // app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
+import CookieConsent from "@/components/CookieConsent";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Temp Services - Professional Service Cost Estimates",
@@ -18,6 +20,12 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="google-adsense-account" content="ca-pub-9491350510503451" />
         <link rel="icon" href="/images/favicon1.ico" />
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9491350510503451"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </head>
       <body>
         <header>
@@ -62,6 +70,7 @@ export default function RootLayout({
                   <li><a href="/guides/#avoiding-scams">Avoiding Scams</a></li>
                   <li><a href="/disclaimer/">Disclaimer</a></li>
                   <li><a href="/privacy-policy/">Privacy Policy</a></li>
+                  <li><a href="/terms-of-service/">Terms of Service</a></li>
                 </ul>
               </div>
               <div>
@@ -79,6 +88,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
+        <CookieConsent />
       </body>
     </html>
   );

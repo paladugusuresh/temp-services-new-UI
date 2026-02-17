@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPage() {
-  const lastUpdated = "December 20, 2025";
+  const lastUpdated = "February 15, 2026";
 
   return (
     <main style={{ maxWidth: "800px", margin: "0 auto", padding: "24px", fontFamily: "system-ui, sans-serif", lineHeight: "1.75" }}>
@@ -54,6 +54,24 @@ export default function PrivacyPage() {
         <li>Understand site usage patterns</li>
         <li>Improve user experience</li>
       </ul>
+
+      <p style={{ marginTop: "16px" }}>
+        When you first visit our website, a cookie consent banner will appear allowing you to accept
+        or decline non-essential cookies. If you decline, personalized advertising cookies will not be set.
+        You can change your preference at any time by clearing your browser cookies and revisiting the site.
+      </p>
+
+      <h2 style={{ fontSize: "1.875rem", fontWeight: "600", marginTop: "32px", marginBottom: "16px" }}>
+        Google AdSense
+      </h2>
+
+      <p>
+        We use Google AdSense to display advertisements. Google AdSense uses cookies to serve ads based on
+        your prior visits to this website or other websites. Google&apos;s use of advertising cookies enables it and
+        its partners to serve ads based on your visit to this site and/or other sites on the Internet.
+        You may opt out of personalized advertising by visiting{" "}
+        <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb" }}>Google Ads Settings</a>.
+      </p>
 
       <h2 style={{ fontSize: "1.875rem", fontWeight: "600", marginTop: "32px", marginBottom: "16px" }}>
         Your Choices and Opt-Out
@@ -129,6 +147,27 @@ export default function PrivacyPage() {
         collected and request deletion. Since we don't directly collect personal information, this primarily relates 
         to third-party advertising partners. Use the opt-out links above to exercise your rights.
       </div>
+
+      <div style={{
+        background: "#f0fdf4",
+        border: "1px solid #86efac",
+        borderRadius: "8px",
+        padding: "16px",
+        marginTop: "16px",
+        fontSize: "0.875rem"
+      }}>
+        <strong>European Visitors (GDPR):</strong> If you are located in the European Economic Area, you have rights
+        under the General Data Protection Regulation including the right to access, rectify, or erase personal data
+        processed by our advertising partners. We display a cookie consent banner on your first visit and will not
+        set non-essential cookies without your consent. To exercise your GDPR rights or withdraw consent, clear your
+        browser cookies and decline on your next visit, or contact us at{" "}
+        <a href="mailto:hello@temp-services.com" style={{ color: "#16a34a" }}>hello@temp-services.com</a>.
+      </div>
+
+      <p style={{ marginTop: "32px" }}>
+        See also our <a href="/terms-of-service/" style={{ color: "#2563eb" }}>Terms of Service</a> and{" "}
+        <a href="/disclaimer/" style={{ color: "#2563eb" }}>Disclaimer</a>.
+      </p>
     </main>
   );
 }

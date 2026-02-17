@@ -121,7 +121,7 @@ export default async function StatePage({ params }: { params: Promise<{ state: s
           Hiring Home Service Professionals in {st.name}
         </h2>
         <p style={{ color: "#4b5563", lineHeight: "1.75", marginBottom: "16px" }}>
-          When hiring for home services in {st.name}, it's important to verify that contractors are properly licensed 
+          When hiring for home services in {st.name}, it&apos;s important to verify that contractors are properly licensed 
           and insured according to state requirements. {st.name} may have specific licensing requirements for trades 
           like electrical, plumbing, and HVAC work. Always ask to see proof of licensing and insurance before work begins.
         </p>
@@ -134,6 +134,90 @@ export default async function StatePage({ params }: { params: Promise<{ state: s
           Consider timing your projects strategically. Many services have peak seasons when demand is high and pricing 
           may be elevated. Scheduling during off-peak times can sometimes result in better availability and pricing.
         </p>
+      </section>
+
+      {/* Contractor Evaluation Checklist */}
+      <section style={{
+        marginTop: "32px",
+        padding: "24px",
+        backgroundColor: "#fffbeb",
+        borderRadius: "12px",
+        border: "1px solid #fef08a"
+      }}>
+        <h2 style={{ fontSize: "1.5rem", fontWeight: "600", marginBottom: "16px", color: "#92400e" }}>
+          Contractor Evaluation Checklist for {st.name} Homeowners
+        </h2>
+        <p style={{ color: "#a16207", marginBottom: "16px", lineHeight: "1.6" }}>
+          Before you sign a contract with any home service provider in {st.name}, run through this checklist
+          to protect yourself and ensure quality work:
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "16px" }}>
+          <div>
+            <h3 style={{ fontSize: "1rem", fontWeight: "600", color: "#78350f", marginBottom: "8px" }}>Before Hiring</h3>
+            <ul style={{ color: "#92400e", lineHeight: "1.75", paddingLeft: "20px", margin: 0 }}>
+              <li>Verify {st.name} state license is active and current</li>
+              <li>Confirm liability insurance coverage</li>
+              <li>Check workers&apos; compensation insurance</li>
+              <li>Read online reviews across multiple platforms</li>
+              <li>Get at least 3 written quotes for comparison</li>
+            </ul>
+          </div>
+          <div>
+            <h3 style={{ fontSize: "1rem", fontWeight: "600", color: "#78350f", marginBottom: "8px" }}>During the Job</h3>
+            <ul style={{ color: "#92400e", lineHeight: "1.75", paddingLeft: "20px", margin: 0 }}>
+              <li>Get all change orders in writing before approving</li>
+              <li>Never pay more than 50% upfront</li>
+              <li>Confirm permits were pulled (when required)</li>
+              <li>Document progress with photos</li>
+              <li>Keep all communication records</li>
+            </ul>
+          </div>
+          <div>
+            <h3 style={{ fontSize: "1rem", fontWeight: "600", color: "#78350f", marginBottom: "8px" }}>After Completion</h3>
+            <ul style={{ color: "#92400e", lineHeight: "1.75", paddingLeft: "20px", margin: 0 }}>
+              <li>Do a thorough walkthrough before final payment</li>
+              <li>Get warranty documentation in writing</li>
+              <li>Confirm permit was closed (if applicable)</li>
+              <li>Keep receipts for future reference</li>
+              <li>Leave an honest review to help other homeowners</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Why prices vary within the state */}
+      <section style={{ marginTop: "32px" }}>
+        <h2 style={{ fontSize: "1.5rem", fontWeight: "600", marginBottom: "16px" }}>
+          Why Prices Vary Within {st.name}
+        </h2>
+        <p style={{ color: "#4b5563", lineHeight: "1.75", marginBottom: "16px" }}>
+          Our estimates represent statewide averages adjusted for {st.name}&apos;s overall cost of living.
+          However, actual prices you receive from contractors can vary significantly within {st.name}
+          for several reasons:
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px" }}>
+          <div style={{ padding: "16px", backgroundColor: "white", borderRadius: "8px", border: "1px solid #e5e7eb" }}>
+            <strong style={{ display: "block", marginBottom: "4px", color: "#1e293b" }}>Urban vs. Rural</strong>
+            <p style={{ color: "#6b7280", lineHeight: "1.6", margin: 0, fontSize: "0.9375rem" }}>
+              Contractors in major metro areas have higher overhead costs (rent, insurance, labor), which is
+              reflected in their pricing. Rural contractors may charge travel fees but often have lower base rates.
+            </p>
+          </div>
+          <div style={{ padding: "16px", backgroundColor: "white", borderRadius: "8px", border: "1px solid #e5e7eb" }}>
+            <strong style={{ display: "block", marginBottom: "4px", color: "#1e293b" }}>Competition Levels</strong>
+            <p style={{ color: "#6b7280", lineHeight: "1.6", margin: 0, fontSize: "0.9375rem" }}>
+              Areas with more contractors typically have more competitive pricing. In underserved areas with few
+              providers, prices tend to be higher due to limited options and higher demand per contractor.
+            </p>
+          </div>
+          <div style={{ padding: "16px", backgroundColor: "white", borderRadius: "8px", border: "1px solid #e5e7eb" }}>
+            <strong style={{ display: "block", marginBottom: "4px", color: "#1e293b" }}>Local Regulations</strong>
+            <p style={{ color: "#6b7280", lineHeight: "1.6", margin: 0, fontSize: "0.9375rem" }}>
+              Permit requirements, inspection fees, and local building codes vary by county and city within {st.name}.
+              Some jurisdictions have stricter requirements that add to the total cost of a project.
+            </p>
+          </div>
+        </div>
       </section>
     </main>
   );

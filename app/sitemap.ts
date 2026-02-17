@@ -15,6 +15,7 @@ export default function sitemap() {
     { url: `${base}/privacy-policy/`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
     { url: `${base}/disclaimer/`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
     { url: `${base}/services/`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
+    { url: `${base}/terms-of-service/`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
   ];
 
   // Add service hub pages

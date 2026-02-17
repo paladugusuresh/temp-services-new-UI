@@ -2,6 +2,17 @@
 import { STATES } from "@/content/states";
 import { SERVICES } from "@/content/services";
 import CostCompare from "@/components/CostCompare";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home Service Cost Estimates Across the United States | Temp Services",
+  description: "Get free, data-driven cost estimates for home services like plumbing, electrical, HVAC, and roofing across all 50 states. Powered by BEA and BLS government data.",
+  openGraph: {
+    title: "Home Service Cost Estimates Across the United States | Temp Services",
+    description: "Get free, data-driven cost estimates for home services like plumbing, electrical, HVAC, and roofing across all 50 states. Powered by BEA and BLS government data.",
+    type: "website",
+  },
+};
 
 export default function HomePage() {
   const serviceOptions = SERVICES.map(s => ({ key: s.key, name: s.name, slugCost: s.slugCost }));
@@ -218,6 +229,81 @@ export default function HomePage() {
           <a href="/contact/" className="btn btn-secondary">Contact Us</a>
         </div>
       </section>
+
+      {/* Unique editorial content — not duplicated anywhere else on the site */}
+      <section style={{ marginTop: "48px" }}>
+        <h2>Frequently Asked Questions About Our Cost Estimates</h2>
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginTop: "20px" }}>
+          <details style={{ border: "1px solid #e5e7eb", borderRadius: "8px", padding: "16px" }}>
+            <summary style={{ fontWeight: "600", cursor: "pointer" }}>Are these real contractor quotes?</summary>
+            <p style={{ color: "#6b7280", marginTop: "12px", lineHeight: "1.75" }}>
+              No. Our estimates are calculated cost ranges based on national baseline pricing, adjusted for your
+              state&apos;s cost of living using Bureau of Economic Analysis Regional Price Parities and the Bureau of
+              Labor Statistics Consumer Price Index. They represent what typical homeowners pay for standard jobs
+              but are not quotes from specific contractors. Always get written quotes from licensed local contractors
+              for your specific project.
+            </p>
+          </details>
+
+          <details style={{ border: "1px solid #e5e7eb", borderRadius: "8px", padding: "16px" }}>
+            <summary style={{ fontWeight: "600", cursor: "pointer" }}>How often is the pricing data updated?</summary>
+            <p style={{ color: "#6b7280", marginTop: "12px", lineHeight: "1.75" }}>
+              We update our estimates monthly when the Bureau of Labor Statistics releases new Consumer Price Index
+              data, and annually when the Bureau of Economic Analysis publishes updated Regional Price Parities.
+              Our national baselines are reviewed quarterly based on market research and industry data.
+            </p>
+          </details>
+
+          <details style={{ border: "1px solid #e5e7eb", borderRadius: "8px", padding: "16px" }}>
+            <summary style={{ fontWeight: "600", cursor: "pointer" }}>Why is the price range so wide for some services?</summary>
+            <p style={{ color: "#6b7280", marginTop: "12px", lineHeight: "1.75" }}>
+              Service costs naturally have a wide range because so much depends on the specific job. A simple faucet
+              replacement and a complete bathroom re-pipe are both &quot;plumbing&quot; but cost very different amounts.
+              Our low-to-high range captures this variation by representing simple/standard jobs at the low end and
+              more complex or larger-scope projects at the high end. The &quot;typical&quot; amount reflects what most
+              homeowners pay for a standard job.
+            </p>
+          </details>
+
+          <details style={{ border: "1px solid #e5e7eb", borderRadius: "8px", padding: "16px" }}>
+            <summary style={{ fontWeight: "600", cursor: "pointer" }}>Do you make money from contractor referrals?</summary>
+            <p style={{ color: "#6b7280", marginTop: "12px", lineHeight: "1.75" }}>
+              No. We do not connect homeowners with contractors or accept payment for listing contractors.
+              Our site is funded through advertising (clearly marked). Our cost estimates are independent and
+              not influenced by any contractor or service provider. We have no financial incentive to steer
+              you toward higher or lower cost options.
+            </p>
+          </details>
+
+          <details style={{ border: "1px solid #e5e7eb", borderRadius: "8px", padding: "16px" }}>
+            <summary style={{ fontWeight: "600", cursor: "pointer" }}>Can I use your data for my business or publication?</summary>
+            <p style={{ color: "#6b7280", marginTop: "12px", lineHeight: "1.75" }}>
+              Our content and data are copyrighted. If you&apos;re interested in citing our estimates or using our data
+              for editorial or business purposes, please <a href="/contact/" style={{ color: "#2563eb" }}>contact us</a> to
+              discuss licensing and attribution requirements.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      {/* Schema.org structured data for the homepage */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Temp Services",
+            "url": "https://temp-services.com/",
+            "description": "Free, data-driven cost estimates for home services across the United States, powered by BEA and BLS government data.",
+            "publisher": {
+              "@type": "Organization",
+              "name": "Temp Services",
+              "url": "https://temp-services.com/"
+            }
+          })
+        }}
+      />
     </div>
   );
 }

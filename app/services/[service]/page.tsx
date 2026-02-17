@@ -2,7 +2,25 @@ import { notFound } from "next/navigation";
 import { SERVICES } from "@/content/services";
 import { STATES } from "@/content/states";
 import HiringGuide from "@/components/HiringGuide";
+import ServiceInsights from "@/components/ServiceInsights";
 import { getGuideForService } from "@/content/guides";
+import { getServiceInsight } from "@/content/service-insights";
+import type { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: Promise<{ service: string }> }): Promise<Metadata> {
+  const { service } = await params;
+  const svc = SERVICES.find((s) => s.key === service);
+  if (!svc) return {};
+
+  const title = `${svc.name} Cost Estimates by State | Temp Services`;
+  const description = `${svc.intro.split('.')[0]}. Compare ${svc.name.toLowerCase()} costs across all states with expert hiring advice, pricing insights, and tips.`;
+
+  return {
+    title,
+    description,
+    openGraph: { title, description },
+  };
+}
 
 export default async function ServiceHub({ params }: { params: Promise<{ service: string }> }) {
   const { service } = await params;
@@ -10,6 +28,7 @@ export default async function ServiceHub({ params }: { params: Promise<{ service
   if (!svc) return notFound();
 
   const guide = getGuideForService(svc.key);
+  const serviceInsight = getServiceInsight(svc.key);
 
   return (
     <main style={{ maxWidth: "980px", margin: "0 auto", padding: "24px" }}>
@@ -65,6 +84,9 @@ export default async function ServiceHub({ params }: { params: Promise<{ service
           </ul>
         </section>
       )}
+
+      {/* Unique Service Editorial Content — hand-written per service */}
+      {serviceInsight && <ServiceInsights insight={serviceInsight} serviceName={svc.name} />}
 
       {/* Hiring Guide Section */}
       {guide && <HiringGuide guide={guide} serviceName={svc.name} />}
